@@ -1,11 +1,15 @@
-public enum ComponentTypeStatus
+
+namespace ITWEB_M3.Models
 {
-    Available,
-    ReservedLoaner,
-    ReservedAdmin,
-    Loaned,
-    Defect,
-    Trashed,
-    Lost,
-    NeverReturned
+    public enum ComponentTypeStatus
+    {
+        Available,
+        ReservedLoaner,
+        ReservedAdmin,
+        Loaned,
+        Defect,
+        Trashed,
+        Lost,
+        NeverReturned
+    }
 }
