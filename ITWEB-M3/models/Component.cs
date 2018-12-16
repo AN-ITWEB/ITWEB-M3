@@ -7,5 +7,5 @@ public class Component
     public ComponentTypeStatus Status { get; set; }
     public string AdminComment { get; set; }
     public string UserComment { get; set; }
-    public long? CurrentLoanInformationId { get; set; }
+    public ComponentType ComponentType { get; set; }
 }
