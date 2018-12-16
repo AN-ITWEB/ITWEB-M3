@@ -4,14 +4,16 @@ using ITWEB_M3.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ITWEB_M3.Migrations
 {
     [DbContext(typeof(EmbededStockContext))]
-    partial class EmbededStockContextModelSnapshot : ModelSnapshot
+    [Migration("20181216141551_ComponentTypeObject")]
+    partial class ComponentTypeObject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
