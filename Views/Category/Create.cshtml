@@ -1,0 +1,19 @@
+﻿@model ITWEB_M3.Models.Category
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+
+<body>
+<div class="container">
+    <form asp-controller="Category" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>
+</body>
