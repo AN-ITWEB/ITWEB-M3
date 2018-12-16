@@ -1,4 +1,4 @@
-﻿@model ITWEB_M3.Models.Component
+﻿@model ITWEB_M3.Models.ComponentViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,14 +13,10 @@
         <form asp-controller="Component" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ComponentId" class="control-label"></label>
-                <input asp-for="ComponentId" class="form-control" />
-                <span asp-validation-for="ComponentId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ComponentType" class="control-label"></label>
-                <input asp-for="ComponentType" class="form-control" />
-                <span asp-validation-for="ComponentType" class="text-danger"></span>
+                <label asp-for="ComponentTypeId" class="control-label"></label>
+                <select asp-for="ComponentTypeId" asp-items="@ViewBag.ComponentTypeList"></select>
+                @*<input asp-for="ComponentType" class="form-control" />
+                <span asp-validation-for="ComponentType" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="ComponentNumber" class="control-label"></label>

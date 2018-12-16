@@ -49,6 +49,7 @@ namespace ITWEB_M3.Controllers
         [HttpPost]
         public ActionResult Edit(int id, Category data)
         {
+            data.CategoryId = id;
             _context.Categories.Update(data);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index), "Category");

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ITWEB_M3.Models
 {
-    public class ComponentType
+    public class ComponentTypeViewModel2
     {
         public long ComponentTypeId { get; set; }
         public string ComponentName { get; set; }
@@ -16,25 +16,24 @@ namespace ITWEB_M3.Models
         public string AdminComment { get; set; }
         public virtual ESImage Image { get; set; }
         public ICollection<Component> Components { get; protected set; }
-        public ICollection<CategoryToComponentType> CategoryToComponentTypes { get; set; }
+        public ICollection<Category> Category { get; protected set; }
 
-        public ComponentType()
+        public ComponentTypeViewModel2()
         {
             Components = new List<Component>();
-            CategoryToComponentTypes = new List<CategoryToComponentType>();
         }
 
 
-        public static ComponentType ParseToComponent(ComponentTypeViewModel componentTypeViewModel, List<CategoryToComponentType> category)
+        public static ComponentTypeViewModel2 ParseToComponent(ComponentTypeViewModel componentTypeViewModel, List<Category> category)
         {
-            return new ComponentType
+            return new ComponentTypeViewModel2
             {
                 ComponentTypeId = componentTypeViewModel.ComponentTypeId,
                 Components = componentTypeViewModel.Components,
                 Status = componentTypeViewModel.Status,
                 ComponentName = componentTypeViewModel.ComponentName,
                 AdminComment = componentTypeViewModel.AdminComment,
-                CategoryToComponentTypes = category,
+                Category = category,
                 ComponentInfo = componentTypeViewModel.ComponentInfo,
                 Datasheet = componentTypeViewModel.Datasheet,
                 Image = componentTypeViewModel.Image,

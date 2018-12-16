@@ -11,5 +11,23 @@ namespace ITWEB_M3.Models
         public string AdminComment { get; set; }
         public string UserComment { get; set; }
         public long? CurrentLoanInformationId { get; set; }
+
+
+        public static Component ParseToComponent(ComponentViewModel componentViewModel, ComponentType componentType)
+        {
+            return new Component
+            {
+                ComponentType = componentType,
+                ComponentId = componentViewModel.ComponentId,
+                AdminComment = componentViewModel.AdminComment,
+                ComponentNumber = componentViewModel.ComponentNumber,
+                CurrentLoanInformationId = componentViewModel.CurrentLoanInformationId,
+                SerialNo = componentViewModel.SerialNo,
+                Status = componentViewModel.Status,
+                UserComment = componentViewModel.UserComment
+            };
+        }
+
+
     }
 }
