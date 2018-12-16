@@ -1,21 +1,25 @@
-﻿using ITWEB_M3.Models;
+﻿using System.Linq;
+using ITWEB_M3.Context;
+using ITWEB_M3.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITWEB_M3.Controllers
 {
     public class CategoryController : Controller
     {
-
-        public CategoryController()
+        private readonly EmbededStockContext _context;
+        public CategoryController(EmbededStockContext context)
         {
+            _context = context;
         }
 
         // GET: /Category/
         public ViewResult Index()
         {
+            var test = _context.Categories.ToList();
             //DummyData
             var data = new Category[]{new Category{Name = "asdasdasd", CategoryId = 12, CategoryToComponentTypes = { new CategoryToComponentType{Category = new Category{Name = "asdasd"},ComponentType = new ComponentType{AdminComment = "asdasd"}}}}};
-            return View(data);
+            return View(test);
         }
 
         // GET: /Category/Create
@@ -29,14 +33,15 @@ namespace ITWEB_M3.Controllers
         [HttpPost]
         public ActionResult Create(Category data)
         {
-            
+            _context.Categories.Add(data);
+            _context.SaveChanges();
             // insert
             return RedirectToAction(nameof(Index), "Category");
         }
 
         public ViewResult Edit(int id)
         {
-            var data = new Category();
+            var data = _context.Categories.Find(id);
 
             return View(data);
         }
@@ -44,13 +49,15 @@ namespace ITWEB_M3.Controllers
         [HttpPost]
         public ActionResult Edit(int id, Category data)
         {
-            //edit
+            _context.Categories.Update(data);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index), "Category");
         }
 
         public ActionResult Delete(int id)
         {
-            // _repo.Delete(_repo.Get(id));
+            _context.Categories.Remove(new Category{ CategoryId = id });
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index), "Category");
         }
     }
