@@ -27,12 +27,17 @@ namespace ITWEB_M3.Controllers
         // GET: /Category/Create
         public ViewResult Create()
         {
+            SetupViewBags();
+            var model = new ComponentViewModel();
+            return View(model);
+        }
+
+        private void SetupViewBags()
+        {
             var componentTypeList = Enum.GetNames(typeof(ComponentStatus)).Select(componentTypeStatus => new SelectListItem { Text = componentTypeStatus, Value = componentTypeStatus }).ToList();
             ViewBag.ComponentStatusesList = componentTypeList;
 
             ViewBag.ComponentTypeList = getComponentList();
-            var model = new ComponentViewModel();
-            return View(model);
         }
 
         private List<SelectListItem> getComponentList()
@@ -56,6 +61,7 @@ namespace ITWEB_M3.Controllers
 
         public ViewResult Edit(long id)
         {
+            SetupViewBags();
             var data = _context.Components.Find(id);
 
             return View(data);

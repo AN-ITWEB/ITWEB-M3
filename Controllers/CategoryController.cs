@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ITWEB_M3.Context;
 using ITWEB_M3.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,14 @@ namespace ITWEB_M3.Controllers
             _context.Categories.Remove(new Category{ CategoryId = id });
             _context.SaveChanges();
             return RedirectToAction(nameof(Index), "Category");
+        }
+
+        public ViewResult View(long id)
+        {
+            var category = _context.Categories.Include(x => x.CategoryToComponentTypes).ThenInclude( y => y.ComponentType).First(z => z.CategoryId == id);
+            var componentTypes = category.CategoryToComponentTypes.Select(categoryToComponentType => categoryToComponentType.ComponentType).ToList();
+
+            return View(componentTypes);
         }
     }
 }

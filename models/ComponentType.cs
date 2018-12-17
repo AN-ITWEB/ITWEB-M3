@@ -45,5 +45,22 @@ namespace ITWEB_M3.Models
 
             };
         }
+
+        public static void OverWrite(ComponentType componentTypeEF, ComponentType componentType)
+        {
+            componentTypeEF.ComponentTypeId = componentType.ComponentTypeId;
+            componentTypeEF.Components = componentType.Components;
+            componentTypeEF.Status = componentType.Status;
+            componentTypeEF.ComponentName = componentType.ComponentName;
+            componentTypeEF.AdminComment = componentType.AdminComment;
+            componentTypeEF.CategoryToComponentTypes = componentType.CategoryToComponentTypes;
+            componentTypeEF.ComponentInfo = componentType.ComponentInfo;
+            componentTypeEF.Datasheet = componentType.Datasheet;
+            componentTypeEF.Image = componentType.Image;
+            componentTypeEF.ImageUrl = componentType.ImageUrl;
+            componentTypeEF.Location = componentType.Location;
+            componentTypeEF.Manufacturer = componentType.Manufacturer;
+            componentTypeEF.WikiLink = componentType.WikiLink;
+        }
     }
 }

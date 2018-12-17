@@ -83,7 +83,7 @@
                 <td>
                     <a asp-controller="ComponentType" asp-action="Edit" asp-route-id="@item.ComponentTypeId" class="btn btn-default">Edit</a>
                     <a asp-controller="ComponentType" asp-action="Delete" asp-route-id="@item.ComponentTypeId" class="btn btn-default">Delete</a>
-                    @*<a asp-controller="Component" asp-action="ComponentType" asp-route-id="@item.Id" class="btn btn-default">Components</a>*@
+                    <a asp-controller="ComponentType" asp-action="View" asp-route-id="@item.ComponentTypeId" class="btn btn-default">Components</a>
                 </td>
             </tr>
         }

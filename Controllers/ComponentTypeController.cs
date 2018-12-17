@@ -79,6 +79,7 @@ namespace ITWEB_M3.Web
                 categoryToComponentTypes.Add(new CategoryToComponentType
                 {
                     ComponentType = componentType,
+                    ComponentTypeId = componentType.ComponentTypeId,
                     Category = categoryToComponentType,
                     CategoryId = categoryToComponentType.CategoryId
                 });
@@ -99,10 +100,13 @@ namespace ITWEB_M3.Web
         [HttpPost]
         public ActionResult Edit(int id, ComponentTypeViewModel data)
         {
+            var test = _context.ComponentTypes.First(x => x.ComponentTypeId == id);
             data.ComponentTypeId = id;
             var componentType = GetComponentType(data);
+            ComponentType.OverWrite(test, componentType);
             
-            _context.ComponentTypes.Update(componentType);
+
+            _context.ComponentTypes.Update(test);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index), "ComponentType");
         }
@@ -112,6 +116,11 @@ namespace ITWEB_M3.Web
             _context.ComponentTypes.Remove(new ComponentType{ ComponentTypeId = id });
             _context.SaveChanges();
             return RedirectToAction(nameof(Index), "ComponentType");
+        }
+        public ViewResult View(long id)
+        {
+            var components = _context.ComponentTypes.Include(x => x.ComponentTypeId).Where(z => z.ComponentTypeId == id).SelectMany(y => y.Components).ToList();
+            return View(components);
         }
     }
 }
