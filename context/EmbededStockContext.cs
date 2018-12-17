@@ -21,6 +21,11 @@ namespace ITWEB_M3.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder){
             modelBuilder.Entity<CategoryToComponentType>().HasKey(t => new {t.CategoryId, t.ComponentTypeId});
+
+            modelBuilder.Entity<ComponentType>()
+                .HasMany(c => c.Components)
+                .WithOne(e => e.ComponentType)
+                .HasForeignKey(k => k.ComponentTypeId);
         }
         
     }

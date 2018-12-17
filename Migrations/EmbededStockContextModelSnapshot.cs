@@ -21,7 +21,7 @@ namespace ITWEB_M3.Migrations
 
             modelBuilder.Entity("ITWEB_M3.Models.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<long>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -38,11 +38,7 @@ namespace ITWEB_M3.Migrations
 
                     b.Property<long>("ComponentTypeId");
 
-                    b.Property<int?>("CategoryId1");
-
                     b.HasKey("CategoryId", "ComponentTypeId");
-
-                    b.HasIndex("CategoryId1");
 
                     b.HasIndex("ComponentTypeId");
 
@@ -59,19 +55,21 @@ namespace ITWEB_M3.Migrations
 
                     b.Property<int>("ComponentNumber");
 
-                    b.Property<long?>("ComponentTypeId");
+                    b.Property<long>("ComponentTypeId");
 
                     b.Property<long?>("CurrentLoanInformationId");
 
                     b.Property<string>("SerialNo");
 
-                    b.Property<int>("Status");
+                    b.Property<long?>("StatusComponentTypeId");
 
                     b.Property<string>("UserComment");
 
                     b.HasKey("ComponentId");
 
                     b.HasIndex("ComponentTypeId");
+
+                    b.HasIndex("StatusComponentTypeId");
 
                     b.ToTable("Components");
                 });
@@ -131,7 +129,8 @@ namespace ITWEB_M3.Migrations
                 {
                     b.HasOne("ITWEB_M3.Models.Category", "Category")
                         .WithMany("CategoryToComponentTypes")
-                        .HasForeignKey("CategoryId1");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ITWEB_M3.Models.ComponentType", "ComponentType")
                         .WithMany("CategoryToComponentTypes")
@@ -143,7 +142,12 @@ namespace ITWEB_M3.Migrations
                 {
                     b.HasOne("ITWEB_M3.Models.ComponentType", "ComponentType")
                         .WithMany("Components")
-                        .HasForeignKey("ComponentTypeId");
+                        .HasForeignKey("ComponentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ITWEB_M3.Models.ComponentType", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusComponentTypeId");
                 });
 
             modelBuilder.Entity("ITWEB_M3.Models.ComponentType", b =>

@@ -2,6 +2,7 @@
 using ITWEB_M3.Context;
 using ITWEB_M3.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITWEB_M3.Controllers
 {
@@ -16,10 +17,8 @@ namespace ITWEB_M3.Controllers
         // GET: /Category/
         public ViewResult Index()
         {
-            var test = _context.Categories.ToList();
-            //DummyData
-            var data = new Category[]{new Category{Name = "asdasdasd", CategoryId = 12, CategoryToComponentTypes = { new CategoryToComponentType{Category = new Category{Name = "asdasd"},ComponentType = new ComponentType{AdminComment = "asdasd"}}}}};
-            return View(test);
+            var categories = _context.Categories.ToList();
+            return View(categories);
         }
 
         // GET: /Category/Create
@@ -39,7 +38,7 @@ namespace ITWEB_M3.Controllers
             return RedirectToAction(nameof(Index), "Category");
         }
 
-        public ViewResult Edit(int id)
+        public ViewResult Edit(long id)
         {
             var data = _context.Categories.Find(id);
 

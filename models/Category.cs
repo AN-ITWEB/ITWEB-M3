@@ -4,7 +4,7 @@ namespace ITWEB_M3.Models
 {
     public class Category
     {
-        public int CategoryId {get; set;}
+        public long CategoryId {get; set;}
         public string Name {get; set;}
         public ICollection<CategoryToComponentType> CategoryToComponentTypes {get; protected set;}
 

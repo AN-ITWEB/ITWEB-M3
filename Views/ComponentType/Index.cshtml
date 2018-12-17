@@ -73,13 +73,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.AdminComment)
                 </td>
-                @*<td>
+                <td>
                     @foreach (var category in item.CategoryToComponentTypes)
                     {
                         @category.Category.Name
                         <br />
                     }
-                </td>*@
+                </td>
                 <td>
                     <a asp-controller="ComponentType" asp-action="Edit" asp-route-id="@item.ComponentTypeId" class="btn btn-default">Edit</a>
                     <a asp-controller="ComponentType" asp-action="Delete" asp-route-id="@item.ComponentTypeId" class="btn btn-default">Delete</a>

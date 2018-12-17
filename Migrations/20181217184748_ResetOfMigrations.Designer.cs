@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ITWEB_M3.Migrations
 {
     [DbContext(typeof(EmbededStockContext))]
-    [Migration("20181216113749_InitialSchema")]
-    partial class InitialSchema
+    [Migration("20181217184748_ResetOfMigrations")]
+    partial class ResetOfMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace ITWEB_M3.Migrations
 
             modelBuilder.Entity("ITWEB_M3.Models.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<long>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -40,11 +40,7 @@ namespace ITWEB_M3.Migrations
 
                     b.Property<long>("ComponentTypeId");
 
-                    b.Property<int?>("CategoryId1");
-
                     b.HasKey("CategoryId", "ComponentTypeId");
-
-                    b.HasIndex("CategoryId1");
 
                     b.HasIndex("ComponentTypeId");
 
@@ -67,13 +63,15 @@ namespace ITWEB_M3.Migrations
 
                     b.Property<string>("SerialNo");
 
-                    b.Property<int>("Status");
+                    b.Property<long?>("StatusComponentTypeId");
 
                     b.Property<string>("UserComment");
 
                     b.HasKey("ComponentId");
 
                     b.HasIndex("ComponentTypeId");
+
+                    b.HasIndex("StatusComponentTypeId");
 
                     b.ToTable("Components");
                 });
@@ -85,8 +83,6 @@ namespace ITWEB_M3.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AdminComment");
-
-                    b.Property<int?>("CategoryId");
 
                     b.Property<string>("ComponentInfo");
 
@@ -107,8 +103,6 @@ namespace ITWEB_M3.Migrations
                     b.Property<string>("WikiLink");
 
                     b.HasKey("ComponentTypeId");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ImageESImageId");
 
@@ -136,8 +130,9 @@ namespace ITWEB_M3.Migrations
             modelBuilder.Entity("ITWEB_M3.Models.CategoryToComponentType", b =>
                 {
                     b.HasOne("ITWEB_M3.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId1");
+                        .WithMany("CategoryToComponentTypes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ITWEB_M3.Models.ComponentType", "ComponentType")
                         .WithMany("CategoryToComponentTypes")
@@ -147,18 +142,18 @@ namespace ITWEB_M3.Migrations
 
             modelBuilder.Entity("ITWEB_M3.Models.Component", b =>
                 {
-                    b.HasOne("ITWEB_M3.Models.ComponentType")
+                    b.HasOne("ITWEB_M3.Models.ComponentType", "ComponentType")
                         .WithMany("Components")
                         .HasForeignKey("ComponentTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ITWEB_M3.Models.ComponentType", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusComponentTypeId");
                 });
 
             modelBuilder.Entity("ITWEB_M3.Models.ComponentType", b =>
                 {
-                    b.HasOne("ITWEB_M3.Models.Category")
-                        .WithMany("ComponentTypes")
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("ITWEB_M3.Models.ESImage", "Image")
                         .WithMany()
                         .HasForeignKey("ImageESImageId");

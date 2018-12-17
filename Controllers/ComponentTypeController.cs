@@ -19,7 +19,7 @@ namespace ITWEB_M3.Web
 
         public ViewResult Index()
         {
-            var list = _context.ComponentTypes.Include(x => x.CategoryToComponentTypes).ThenInclude(x => x.Category).ToList();
+            var list = _context.ComponentTypes.Include(x => x.CategoryToComponentTypes).ThenInclude(x => x.Category).Include(x => x.Components).ToList();
 
             return View(list);
         }
@@ -27,14 +27,19 @@ namespace ITWEB_M3.Web
         // GET: /Category/Create
         public ViewResult Create()
         {
-            var componentTypeList = Enum.GetNames(typeof(ComponentTypeStatus)).Select(componentTypeStatus => new SelectListItem {Text = componentTypeStatus, Value = componentTypeStatus}).ToList();
+            SetupViewBagsForComponentTypeAndCategory();
+
+            var model = new ComponentTypeViewModel();
+            return View(model);
+        }
+
+        private void SetupViewBagsForComponentTypeAndCategory()
+        {
+            var componentTypeList = Enum.GetNames(typeof(ComponentTypeStatus)).Select(componentTypeStatus => new SelectListItem { Text = componentTypeStatus, Value = componentTypeStatus }).ToList();
             ViewBag.ComponentTypeStatusesList = componentTypeList;
 
             var categoryList = _context.Categories.ToList().Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }).ToList(); ;
             ViewBag.CategoryList = categoryList;
-
-            var model = new ComponentTypeViewModel();
-            return View(model);
         }
 
 
@@ -43,9 +48,30 @@ namespace ITWEB_M3.Web
         [HttpPost]
         public ActionResult Create(ComponentTypeViewModel data)
         {
-            var componentType = ComponentType.ParseToComponent(data, null);
+            ComponentType componentType = GetComponentType(data);
+            _context.Add(componentType);
+            _context.SaveChanges();
 
-            var categories = _context.Categories.Where(x => data.CategoryIds.Contains(x.CategoryId)).ToList();
+            return RedirectToAction(nameof(Index), "ComponentType");
+        }
+
+        private ComponentType GetComponentType(ComponentTypeViewModel data)
+        {
+            var componentType = ComponentType.ParseToComponent(data, null);
+            List<Category> categories = GetCategoryList(data.CategoryIds);
+            List<CategoryToComponentType> categoryToComponentTypes = GetCategoryToComponentList(componentType, categories);
+
+            componentType.CategoryToComponentTypes = categoryToComponentTypes;
+            return componentType;
+        }
+
+        private List<Category> GetCategoryList(IEnumerable<long> categoryIds)
+        {
+            return _context.Categories.Where(x => categoryIds.Contains(x.CategoryId)).ToList();
+        }
+
+        private static List<CategoryToComponentType> GetCategoryToComponentList(ComponentType componentType, List<Category> categories)
+        {
             var categoryToComponentTypes = new List<CategoryToComponentType>();
 
             foreach (var categoryToComponentType in categories)
@@ -58,25 +84,25 @@ namespace ITWEB_M3.Web
                 });
             }
 
-            componentType.CategoryToComponentTypes = categoryToComponentTypes;
-            _context.Add(componentType);
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(Index), "ComponentType");
+            return categoryToComponentTypes;
         }
 
         public ViewResult Edit(long id)
         {
+            SetupViewBagsForComponentTypeAndCategory();
             var data = _context.ComponentTypes.Find(id);
 
-            return View(data);
+            var componentTypeViewModel = ComponentTypeViewModel.ParseToComponentViewModel(data, _context.Categories.ToList());
+            return View(componentTypeViewModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, ComponentType data)
+        public ActionResult Edit(int id, ComponentTypeViewModel data)
         {
             data.ComponentTypeId = id;
-            _context.ComponentTypes.Update(data);
+            var componentType = GetComponentType(data);
+            
+            _context.ComponentTypes.Update(componentType);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index), "ComponentType");
         }

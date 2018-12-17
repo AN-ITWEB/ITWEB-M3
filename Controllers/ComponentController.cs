@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ITWEB_M3.Context;
 using ITWEB_M3.Models;
@@ -26,6 +27,9 @@ namespace ITWEB_M3.Controllers
         // GET: /Category/Create
         public ViewResult Create()
         {
+            var componentTypeList = Enum.GetNames(typeof(ComponentStatus)).Select(componentTypeStatus => new SelectListItem { Text = componentTypeStatus, Value = componentTypeStatus }).ToList();
+            ViewBag.ComponentStatusesList = componentTypeList;
+
             ViewBag.ComponentTypeList = getComponentList();
             var model = new ComponentViewModel();
             return View(model);

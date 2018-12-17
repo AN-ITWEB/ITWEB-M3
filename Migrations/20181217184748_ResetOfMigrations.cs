@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ITWEB_M3.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class ResetOfMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace ITWEB_M3.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
@@ -51,18 +51,11 @@ namespace ITWEB_M3.Migrations
                     Manufacturer = table.Column<string>(nullable: true),
                     WikiLink = table.Column<string>(nullable: true),
                     AdminComment = table.Column<string>(nullable: true),
-                    ImageESImageId = table.Column<long>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true)
+                    ImageESImageId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ComponentTypes", x => x.ComponentTypeId);
-                    table.ForeignKey(
-                        name: "FK_ComponentTypes_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ComponentTypes_ESImages_ImageESImageId",
                         column: x => x.ImageESImageId,
@@ -76,18 +69,17 @@ namespace ITWEB_M3.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<long>(nullable: false),
-                    ComponentTypeId = table.Column<long>(nullable: false),
-                    CategoryId1 = table.Column<int>(nullable: true)
+                    ComponentTypeId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoryToComponentType", x => new { x.CategoryId, x.ComponentTypeId });
                     table.ForeignKey(
-                        name: "FK_CategoryToComponentType_Categories_CategoryId1",
-                        column: x => x.CategoryId1,
+                        name: "FK_CategoryToComponentType_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CategoryToComponentType_ComponentTypes_ComponentTypeId",
                         column: x => x.ComponentTypeId,
@@ -105,7 +97,7 @@ namespace ITWEB_M3.Migrations
                     ComponentTypeId = table.Column<long>(nullable: false),
                     ComponentNumber = table.Column<int>(nullable: false),
                     SerialNo = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
+                    StatusComponentTypeId = table.Column<long>(nullable: true),
                     AdminComment = table.Column<string>(nullable: true),
                     UserComment = table.Column<string>(nullable: true),
                     CurrentLoanInformationId = table.Column<long>(nullable: true)
@@ -119,12 +111,13 @@ namespace ITWEB_M3.Migrations
                         principalTable: "ComponentTypes",
                         principalColumn: "ComponentTypeId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Components_ComponentTypes_StatusComponentTypeId",
+                        column: x => x.StatusComponentTypeId,
+                        principalTable: "ComponentTypes",
+                        principalColumn: "ComponentTypeId",
+                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoryToComponentType_CategoryId1",
-                table: "CategoryToComponentType",
-                column: "CategoryId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryToComponentType_ComponentTypeId",
@@ -137,9 +130,9 @@ namespace ITWEB_M3.Migrations
                 column: "ComponentTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ComponentTypes_CategoryId",
-                table: "ComponentTypes",
-                column: "CategoryId");
+                name: "IX_Components_StatusComponentTypeId",
+                table: "Components",
+                column: "StatusComponentTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ComponentTypes_ImageESImageId",
@@ -156,10 +149,10 @@ namespace ITWEB_M3.Migrations
                 name: "Components");
 
             migrationBuilder.DropTable(
-                name: "ComponentTypes");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "ComponentTypes");
 
             migrationBuilder.DropTable(
                 name: "ESImages");
