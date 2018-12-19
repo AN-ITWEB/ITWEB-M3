@@ -1,13 +1,14 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using ITWEB_M3.Context;
 using ITWEB_M3.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace ITWEB_M3.Web
+namespace ITWEB_M3.Controllers
 {
     public class ComponentTypeController : Controller
     {
@@ -25,6 +26,7 @@ namespace ITWEB_M3.Web
         }
 
         // GET: /Category/Create
+        [Authorize]
         public ViewResult Create()
         {
             SetupViewBagsForComponentTypeAndCategory();
@@ -88,6 +90,7 @@ namespace ITWEB_M3.Web
             return categoryToComponentTypes;
         }
 
+        [Authorize]
         public ViewResult Edit(long id)
         {
             SetupViewBagsForComponentTypeAndCategory();
@@ -111,6 +114,7 @@ namespace ITWEB_M3.Web
             return RedirectToAction(nameof(Index), "ComponentType");
         }
 
+        [Authorize]
         public ActionResult Delete(int id)
         {
             _context.ComponentTypes.Remove(new ComponentType{ ComponentTypeId = id });

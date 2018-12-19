@@ -1,4 +1,5 @@
 using ITWEB_M3.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITWEB_M3.Context

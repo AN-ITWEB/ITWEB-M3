@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ITWEB_M3.Context;
 using ITWEB_M3.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace ITWEB_M3.Controllers
         }
 
         // GET: /Category/Create
+        [Authorize]
         public ViewResult Create()
         {
             SetupViewBags();
@@ -59,6 +61,7 @@ namespace ITWEB_M3.Controllers
             return RedirectToAction(nameof(Index), "Component");
         }
 
+        [Authorize]
         public ViewResult Edit(long id)
         {
             SetupViewBags();
@@ -76,6 +79,7 @@ namespace ITWEB_M3.Controllers
             return RedirectToAction(nameof(Index), "Component");
         }
 
+        [Authorize]
         public ActionResult Delete(long id)
         {
             _context.Components.Remove(new Component {ComponentId = id});

@@ -2,6 +2,7 @@
 using System.Linq;
 using ITWEB_M3.Context;
 using ITWEB_M3.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ namespace ITWEB_M3.Controllers
         }
 
         // GET: /Category/Create
+        [Authorize]
         public ViewResult Create()
         {
             var model = new Category();
@@ -39,6 +41,7 @@ namespace ITWEB_M3.Controllers
             return RedirectToAction(nameof(Index), "Category");
         }
 
+        [Authorize]
         public ViewResult Edit(long id)
         {
             var data = _context.Categories.Find(id);
@@ -55,6 +58,7 @@ namespace ITWEB_M3.Controllers
             return RedirectToAction(nameof(Index), "Category");
         }
 
+        [Authorize]
         public ActionResult Delete(int id)
         {
             _context.Categories.Remove(new Category{ CategoryId = id });
