@@ -1,6 +1,6 @@
 # Administration modul for Embedded Stock
 ## How to access
-Link here
+https://itweb-m3.azurewebsites.net/
 ## Assignment
 #### Purpose:
 To demonstrate fulfilment of the learning objectives:
